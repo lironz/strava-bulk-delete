@@ -1,0 +1,28 @@
+{
+  "name": "strava-bulk-delete",
+  "version": "1.0.0",
+  "description": "Browser extension to delete mulitple strava activities",
+  "main": "index.js",
+  "scripts": {
+    "build:chrome":"mkdir -p ./dist/chrome && cp ./src/script.js ./dist/chrome && cp -R ./src/assets ./dist/chrome/ && node ./src/manifest.js > ./dist/chrome/manifest.json",
+    "build:firefox":""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pdupavillon/strava-bulk-delete.git"
+  },
+  "keywords": [
+    "strava",
+    "activities",
+    "bulk",
+    "delete",
+    "browser",
+    "extension"
+  ],
+  "author": "paul du pavillon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pdupavillon/strava-bulk-delete/issues"
+  },
+  "homepage": "https://github.com/pdupavillon/strava-bulk-delete#readme"
+}

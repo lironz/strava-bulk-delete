@@ -13,10 +13,8 @@ let manifest = {
         }
     ],
     "browser_action": {
-        "default_icon": "assets/icons/48.png"
-    },
-    "background": {
-        "scripts": ["background.js"]
+        "default_icon": "assets/icons/48.png",
+        "default_popup": "popup.html"
     },
     "icons": {
         "16": "assets/icons/16.png",

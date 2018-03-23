@@ -4,8 +4,11 @@
   "description": "Browser extension to delete mulitple strava activities",
   "main": "index.js",
   "scripts": {
-    "build:chrome":"mkdir -p ./dist/chrome && cp ./src/script.js ./dist/chrome && cp -R ./src/assets ./dist/chrome/ && node ./src/manifest.js > ./dist/chrome/manifest.json",
-    "build:firefox":""
+    "clean":"rm -rf ./dist",
+    "init":"cross-env-shell \"mkdir -p ./dist/$BROWSER\"",
+    "copy":"cross-env-shell \"cp ./src/script.js ./dist/$BROWSER/ && cp ./src/popup.js ./dist/$BROWSER/ && cp ./src/popup.html ./dist/$BROWSER/ && cp -R ./src/assets ./dist/$BROWSER/\" && node ./src/manifest.js > ./dist/$BROWSER/manifest.json",
+    "build:chrome": "cross-env-shell BROWSER=chrome \"npm run clean && npm run init && npm run copy\"",
+    "build:firefox": ""
   },
   "repository": {
     "type": "git",
@@ -24,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/pdupavillon/strava-bulk-delete/issues"
   },
-  "homepage": "https://github.com/pdupavillon/strava-bulk-delete#readme"
+  "homepage": "https://github.com/pdupavillon/strava-bulk-delete#readme",
+  "devDependencies": {
+    "cross-env": "^5.1.4"
+  }
 }

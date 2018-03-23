@@ -8,12 +8,15 @@
             return this.table ? this.table.tHead : null;
         },
         get table_thead_tr(){
-            return this.thead ? this.thead.children[0] : null;
+            return this.table_thead ? this.table_thead.children[0] : null;
+        },
+        HasActivities(){
+            return this.table && this.table.rows && this.table.rows.length > 1;
         }
     }
 
     function _setHeader(){
-        if (searchHelper.table_thead_tr===null) {return;}
+        if (searchHelper.table_thead_tr===null || !searchHelper.HasActivities()) {return;}
         const th = document.createElement('th');
         const checkBox = document.createElement('input');
         const deleteBtn = document.createElement('input');
@@ -22,6 +25,7 @@
         deleteBtn.setAttribute('type', 'button');
         deleteBtn.setAttribute('value', 'DELETE');
         deleteBtn.setAttribute('style', 'margin-left:10px');
+        th.setAttribute('class', 'col-type');
         
         checkBox.onchange = _headerClickEvent;
         deleteBtn.onclick = _deleteEvent;
@@ -40,6 +44,7 @@
             checkBox.setAttribute('type', 'checkbox');
             checkBox.setAttribute('data-type', 'bulkremove');
             checkBox.setAttribute('data-id', id);
+            cell.setAttribute('class', 'view-col col-type');
             
             cell.appendChild(checkBox);
         }
@@ -87,6 +92,7 @@
         _setHeader();
         _setRows();
     }
-
-    Init();
+    window.onload = function(){
+        setTimeout(()=>Init(),500);
+    }
 })();

@@ -4,11 +4,14 @@
   "description": "Browser extension to delete mulitple strava activities",
   "main": "index.js",
   "scripts": {
-    "clean":"rm -rf ./dist",
+    "clean":"cross-env-shell \"rm -rf ./dist/$BROWSER \"",
     "init":"cross-env-shell \"mkdir -p ./dist/$BROWSER\"",
     "copy":"cross-env-shell \"cp ./src/script.js ./dist/$BROWSER/ && cp ./src/popup.js ./dist/$BROWSER/ && cp ./src/popup.html ./dist/$BROWSER/ && cp -R ./src/assets ./dist/$BROWSER/\" && node ./src/manifest.js > ./dist/$BROWSER/manifest.json",
     "build:chrome": "cross-env-shell BROWSER=chrome \"npm run clean && npm run init && npm run copy\"",
-    "build:firefox": ""
+    "build:firefox": "cross-env-shell BROWSER=firefox \"npm run clean && npm run init && npm run copy\"",
+    "zip": "cross-env-shell \"cd ./dist/$BROWSER && zip -r -FS ../$BROWSER.zip * -x \"*.DS_Store\" && cd -\"",
+    "release:firefox": "cross-env-shell BROWSER=firefox \"npm run build:firefox && npm run zip\"",
+    "release:chrome": "cross-env-shell BROWSER=chrome \"npm run build:chrome && npm run zip\""
   },
   "repository": {
     "type": "git",

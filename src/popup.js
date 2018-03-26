@@ -3,7 +3,7 @@
         const link = document.getElementById('gotostrava');
 
         link.addEventListener('click', function() {
-            chrome.tabs.create({ url: 'https://www.strava.com/athlete/training' });
+            browser.tabs.create({ url: 'https://www.strava.com/athlete/training' });
         });
     });
 })();

@@ -1,6 +1,6 @@
 let manifest = {
     "name": "Strava bulk remove",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Bulk remove activities from Strava - by Paul du Pavillon",
     "manifest_version": 2,
     "permissions": [

@@ -10,8 +10,16 @@
         get table_thead_tr(){
             return this.table_thead ? this.table_thead.children[0] : null;
         },
+        get table_body(){
+            return this.table.tBodies.length > 0 ? this.table.tBodies[0] : null;
+        },
+        get activities_rows(){
+            return this.table && this.table.rows && this.table.rows.length > 1 ?
+                    Array.from(this.table.rows).filter((row) => row.classList.contains('training-activity-row')) :
+                    null;
+        },
         HasActivities(){
-            return this.table && this.table.rows && this.table.rows.length > 1;
+            return this.activities_rows && this.activities_rows.length > 0;
         }
     }
 
@@ -35,9 +43,10 @@
         searchHelper.table_thead_tr.prepend(th);
     }
     function _setRows(){
-        for (let c = 1;c < searchHelper.table.rows.length; c++){
-            const cell = searchHelper.table.rows[c].insertCell(0);
-            const link = searchHelper.table.rows[c].cells[3].getElementsByTagName('a')[0];
+        if (!searchHelper.HasActivities()) {return;}
+        searchHelper.activities_rows.forEach((row)=>{
+            const cell = row.insertCell(0);
+            const link = row.cells[3].getElementsByTagName('a')[0];
             const id = (link.getAttribute('href') || '').replace('https://www.strava.com/activities/', '');
     
             const checkBox = document.createElement('input');
@@ -47,7 +56,7 @@
             cell.setAttribute('class', 'view-col col-type');
             
             cell.appendChild(checkBox);
-        }
+        });
     }
     function _headerClickEvent(e) {
         const checked = e.target.checked;
@@ -63,14 +72,17 @@
         const ids = [...inputs].map((input) => {
             return input.dataset.id;
         });
-        const removeEach = () => {
+        const removeEach = (done) => {
             let id = ids.shift();
             if (id){
-                _removeActivity(id, removeEach);
+                _removeActivity(id, ()=> removeEach(done));
+            }else{
+                done();
             }
         }
-        removeEach();
-        document.location.reload();
+        removeEach(()=>{
+            document.location.reload();
+        });
     }
     function _removeActivity(id, done) {
         const token = document.querySelector('meta[name="csrf-token"]');
@@ -88,9 +100,18 @@
         };
         xhr.send();
     }
+    function _observe(){
+        if (MutationObserver){
+            var observer = new MutationObserver(function(mutationsList){
+                _setRows();
+            });
+            observer.observe(searchHelper.table_body, {attributes: true,  childList: true });
+        }
+    } 
     function Init(){
         _setHeader();
         _setRows();
+        _observe();
     }
     window.onload = function(){
         setTimeout(()=>Init(),500);
